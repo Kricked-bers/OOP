@@ -75,8 +75,3 @@ class TestCategory:
         assert len(category.products) == 0
         assert Category.categories_count == 0
         assert Category.product_count == 0  # Продуктов нет, поэтому счетчик не увеличился
-
-
-# Запуск тестов
-if __name__ == "__main__":
-    pytest.main([__file__, "-v"])
