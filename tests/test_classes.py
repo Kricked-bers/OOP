@@ -10,7 +10,7 @@ class TestProduct:
 
         assert product.name == "Ноутбук"
         assert product.description == "Мощный игровой ноутбук"
-        assert product.price == 1500.00
+        assert product.get_price == 1500.00
         assert product.quantity == 10
 
     def test_product_default_values(self):
@@ -19,7 +19,7 @@ class TestProduct:
 
         assert product.name == "Мышь"
         assert product.description == "Беспроводная мышь"
-        assert product.price == 25.50
+        assert product.get_price == 25.50
         assert product.quantity == 50
 
 
@@ -35,8 +35,8 @@ class TestCategory:
 
         assert category.name == "Электроника"
         assert category.description == "Электронные устройства"
-        assert len(category.products) == 1
-        assert category.products[0].name == "Ноутбук"
+        assert len(category.get_products) == 1
+        assert category.get_list_products[0].name == "Ноутбук"
 
     def test_category_counters(self):
         """Тест обновления счетчиков категорий и продуктов"""
@@ -72,6 +72,6 @@ class TestCategory:
 
         assert category.name == "Пустая категория"
         assert category.description == "Нет продуктов"
-        assert len(category.products) == 0
+        assert len(category.get_products) == 0
         assert Category.categories_count == 0
         assert Category.product_count == 0  # Продуктов нет, поэтому счетчик не увеличился
