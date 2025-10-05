@@ -1,3 +1,5 @@
+from itertools import product
+
 import pytest
 
 from src.classes import Category, Product
@@ -10,7 +12,7 @@ class TestProduct:
 
         assert product.name == "Ноутбук"
         assert product.description == "Мощный игровой ноутбук"
-        assert product.get_price == 1500.00
+        assert product.price == 1500.00
         assert product.quantity == 10
 
     def test_product_default_values(self):
@@ -19,8 +21,20 @@ class TestProduct:
 
         assert product.name == "Мышь"
         assert product.description == "Беспроводная мышь"
-        assert product.get_price == 25.50
+        assert product.price == 25.50
         assert product.quantity == 50
+
+    def test_new_product(self):
+        product_5 = Product("Мышь", "Беспроводная мышь", 25.50, 50)
+        assert product_5.price == 25.50
+        product_6 = product_5.new_product(
+            {"name": "Мышка", "description": "Проводная мышь", "price": 15, "quantity": 50})
+        assert product_6.price == 15
+
+    def test_new_price(self):
+        product_7 = Product("Мышь", "Беспроводная мышь", 25.50, 50)
+        product_7.price = 500
+        assert product_7.price == 500
 
 
 class TestCategory:
@@ -35,7 +49,7 @@ class TestCategory:
 
         assert category.name == "Электроника"
         assert category.description == "Электронные устройства"
-        assert len(category.get_products) == 1
+        assert len(category.products) == 1
         assert category.get_list_products[0].name == "Ноутбук"
 
     def test_category_counters(self):
@@ -72,6 +86,12 @@ class TestCategory:
 
         assert category.name == "Пустая категория"
         assert category.description == "Нет продуктов"
-        assert len(category.get_products) == 0
+        assert len(category.products) == 0
         assert Category.categories_count == 0
         assert Category.product_count == 0  # Продуктов нет, поэтому счетчик не увеличился
+
+    def test_add_product_category(self):
+        cat_empty = Category("Отечественная литература", "Толстой", [])
+        product4 = Product("Книга", "Война и мир", 45, 20)
+        cat_empty.add_product(product4)
+        assert cat_empty.products == ["Книга, 45 руб. Остаток: 20 шт."]
