@@ -14,7 +14,7 @@ class Category:
         Category.product_count += len(products)
 
     def add_product(self, new_product):
-        self.product_count += 1
+        Category.product_count += 1
         self.__products.append(new_product)
 
     @property
