@@ -11,7 +11,6 @@ class Category:
 
         # Обновляем атрибуты класса
         Category.category_count += 1
-        Category.product_count += len(products)
 
     def add_product(self, new_product):
         Category.product_count += 1
@@ -57,8 +56,3 @@ class Product:
             self.__price = new_price
         else:
             print("Цена не должна быть нулевая или отрицательная")
-
-
-product_5 = Product("Мышь", "Беспроводная мышь", 25.50, 50)
-product_5.price = -5
-print(product_5.price)

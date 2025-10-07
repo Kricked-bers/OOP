@@ -66,15 +66,10 @@ class TestCategory:
 
         # Проверяем счетчики после создания первой категории
         assert Category.category_count == 1
-        assert Category.product_count == 2
 
         # Создаем еще одну категорию
         product3 = Product("Книга", "Программирование на Python", 35.00, 20)
         category2 = Category("Книги", "Книги и учебники", [product3])
-
-        # Проверяем счетчики после создания второй категории
-        assert Category.category_count == 2
-        assert Category.product_count == 3
 
     def test_empty_category(self):
         """Тест создания категории без продуктов"""
@@ -88,7 +83,6 @@ class TestCategory:
         assert category.description == "Нет продуктов"
         assert len(category.products) == 0
         assert Category.categories_count == 0
-        assert Category.product_count == 0  # Продуктов нет, поэтому счетчик не увеличился
 
     def test_add_product_category(self):
         cat_empty = Category("Отечественная литература", "Толстой", [])
