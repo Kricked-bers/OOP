@@ -11,15 +11,15 @@ class Category:
 
         # Обновляем атрибуты класса
         Category.category_count += 1
-        Category.product_count += len(products)
 
     def add_product(self, new_product):
+        Category.product_count += 1
         self.__products.append(new_product)
 
     @property
-    def get_products(self):
+    def products(self):
         product_list = [
-            f"{i.name}, {i.get_price} руб. Остаток: {i.quantity} шт."
+            f"{i.name}, {i.price} руб. Остаток: {i.quantity} шт."
             for i in self.__products
         ]
         return product_list
@@ -47,11 +47,11 @@ class Product:
         )
 
     @property
-    def get_price(self):
+    def price(self):
         return self.__price
 
-    @get_price.setter
-    def get_price(self, new_price):
+    @price.setter
+    def price(self, new_price):
         if new_price > 0 and new_price != 0:
             self.__price = new_price
         else:
