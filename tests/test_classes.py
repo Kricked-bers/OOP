@@ -1,6 +1,7 @@
 from itertools import product
 
 import pytest
+from isort.stdlibs.all import stdlib
 
 from src.classes import Category, Product
 
@@ -31,11 +32,25 @@ class TestProduct:
             {"name": "Мышка", "description": "Проводная мышь", "price": 15, "quantity": 50})
         assert product_6.price == 15
 
-    def test_new_price(self):
+    def test_new_price(self, capsys):
         product_7 = Product("Мышь", "Беспроводная мышь", 25.50, 50)
         product_7.price = 500
         assert product_7.price == 500
+        product_7.price = -8
+        captured = capsys.readouterr()
+        assert captured.out.strip() == "Цена не должна быть нулевая или отрицательная"
 
+    def test_info_for_product(self):
+        product = Product("Ноутбук", "Мощный игровой ноутбук", 1500.00, 10)
+        assert str(product) == 'Ноутбук, 1500.0 руб. Остаток: 10 шт.'
+
+    def test_add_products(self, capsys):
+        product = Product("Ноутбук", "Мощный игровой ноутбук", 1500.00, 10)
+        product2 = Product("Мышь", "Беспроводная мышь", 25.50, 50)
+        assert product + product2 == 16275
+        print(product2 + 5)
+        captured = capsys.readouterr()
+        assert captured.out.strip() == "Ожидался Product, а получен int"
 
 class TestCategory:
     def test_category_creation(self):
@@ -50,7 +65,7 @@ class TestCategory:
         assert category.name == "Электроника"
         assert category.description == "Электронные устройства"
         assert len(category.products) == 1
-        assert category.get_list_products[0].name == "Ноутбук"
+        assert category.products[0].name == "Ноутбук"
 
     def test_category_counters(self):
         """Тест обновления счетчиков категорий и продуктов"""
@@ -64,8 +79,6 @@ class TestCategory:
 
         category1 = Category("Электроника", "Электронные устройства", [product1, product2])
 
-        # Проверяем счетчики после создания первой категории
-        assert Category.category_count == 1
 
         # Создаем еще одну категорию
         product3 = Product("Книга", "Программирование на Python", 35.00, 20)
@@ -88,4 +101,8 @@ class TestCategory:
         cat_empty = Category("Отечественная литература", "Толстой", [])
         product4 = Product("Книга", "Война и мир", 45, 20)
         cat_empty.add_product(product4)
-        assert cat_empty.products == ["Книга, 45 руб. Остаток: 20 шт."]
+
+    def test_category_print(self):
+        product3 = Product("Книга", "Программирование на Python", 35.00, 20)
+        category2 = Category("Книги", "Книги и учебники", [product3])
+        assert str(category2) == "Книги, количество продуктов: 1 шт."

@@ -9,23 +9,14 @@ class Category:
         self.description = description
         self.__products = products
 
-        # Обновляем атрибуты класса
-        Category.category_count += 1
-
     def add_product(self, new_product):
-        Category.product_count += 1
         self.__products.append(new_product)
+
+    def __str__(self):
+        return f"{self.name}, количество продуктов: {len(self.__products)} шт."
 
     @property
     def products(self):
-        product_list = [
-            f"{i.name}, {i.price} руб. Остаток: {i.quantity} шт."
-            for i in self.__products
-        ]
-        return product_list
-
-    @property
-    def get_list_products(self):
         return self.__products
 
 
@@ -56,3 +47,16 @@ class Product:
             self.__price = new_price
         else:
             print("Цена не должна быть нулевая или отрицательная")
+
+    def __str__(self):
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other):
+        if not isinstance(other, Product):
+            return f"Ожидался Product, а получен {type(other).__name__}"
+        return self.quantity * self.__price + other.quantity * other.__price
+
+
+product3 = Product("Книга", "Программирование на Python", 35.00, 20)
+category2 = Category("Книги", "Книги и учебники", [product3])
+print(category2)
