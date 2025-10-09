@@ -105,4 +105,4 @@ class TestCategory:
     def test_category_print(self):
         product3 = Product("Книга", "Программирование на Python", 35.00, 20)
         category2 = Category("Книги", "Книги и учебники", [product3])
-        assert str(category2) == "Книги, количество продуктов: 1 шт."
+        assert str(category2) == "Книги, количество продуктов: 20 шт."

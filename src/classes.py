@@ -13,7 +13,8 @@ class Category:
         self.__products.append(new_product)
 
     def __str__(self):
-        return f"{self.name}, количество продуктов: {len(self.__products)} шт."
+        return (f"{self.name}, количество продуктов: "
+                f"{sum([i.quantity for i in self.__products])} шт.")
 
     @property
     def products(self):
@@ -55,8 +56,3 @@ class Product:
         if not isinstance(other, Product):
             return f"Ожидался Product, а получен {type(other).__name__}"
         return self.quantity * self.__price + other.quantity * other.__price
-
-
-product3 = Product("Книга", "Программирование на Python", 35.00, 20)
-category2 = Category("Книги", "Книги и учебники", [product3])
-print(category2)
