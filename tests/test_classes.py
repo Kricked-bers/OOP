@@ -1,9 +1,5 @@
-from itertools import product
-
 import pytest
-from isort.stdlibs.all import stdlib
-
-from src.classes import Category, Product
+from src.classes import Category, Product, Smartphone, LawnGrass
 
 
 class TestProduct:
@@ -48,9 +44,9 @@ class TestProduct:
         product = Product("Ноутбук", "Мощный игровой ноутбук", 1500.00, 10)
         product2 = Product("Мышь", "Беспроводная мышь", 25.50, 50)
         assert product + product2 == 16275
-        print(product2 + 5)
-        captured = capsys.readouterr()
-        assert captured.out.strip() == "Ожидался Product, а получен int"
+        with pytest.raises(TypeError):
+            product + 1
+
 
 class TestCategory:
     def test_category_creation(self):
@@ -79,7 +75,6 @@ class TestCategory:
 
         category1 = Category("Электроника", "Электронные устройства", [product1, product2])
 
-
         # Создаем еще одну категорию
         product3 = Product("Книга", "Программирование на Python", 35.00, 20)
         category2 = Category("Книги", "Книги и учебники", [product3])
@@ -99,10 +94,28 @@ class TestCategory:
 
     def test_add_product_category(self):
         cat_empty = Category("Отечественная литература", "Толстой", [])
-        product4 = Product("Книга", "Война и мир", 45, 20)
+        product4 = LawnGrass("Книга", "Война и мир", 45, 20,
+                             "russia", "5", "green")
         cat_empty.add_product(product4)
+        product_smartphone = Smartphone("Test", "u", 56, 56,
+                                        4, 444, 44, "green")
+        with pytest.raises(TypeError):
+            cat_empty.add_product(product_smartphone)
+
 
     def test_category_print(self):
         product3 = Product("Книга", "Программирование на Python", 35.00, 20)
         category2 = Category("Книги", "Книги и учебники", [product3])
         assert str(category2) == "Книги, количество продуктов: 20 шт."
+
+class TestSmartptone:
+    def test_basic_smartphone(self):
+        Pr1 = Smartphone("ggg", "ggg", 66,
+                         888, 87, "Pixel", 666, "green")
+        assert Pr1.name == "ggg"
+
+class TestLawnGress:
+    def test_basic_lawngrass(self):
+        Pr2 = LawnGrass("ggg555", "ggg", 66,
+                         888, "Pixel", 666, "green")
+        assert Pr2.name == "ggg555"
