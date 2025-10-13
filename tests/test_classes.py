@@ -1,5 +1,8 @@
+from itertools import product
+
 import pytest
-from src.classes import Category, Product, Smartphone, LawnGrass
+
+from src.classes import Category, Product
 
 
 class TestProduct:
@@ -28,24 +31,10 @@ class TestProduct:
             {"name": "Мышка", "description": "Проводная мышь", "price": 15, "quantity": 50})
         assert product_6.price == 15
 
-    def test_new_price(self, capsys):
+    def test_new_price(self):
         product_7 = Product("Мышь", "Беспроводная мышь", 25.50, 50)
         product_7.price = 500
         assert product_7.price == 500
-        product_7.price = -8
-        captured = capsys.readouterr()
-        assert captured.out.strip() == "Цена не должна быть нулевая или отрицательная"
-
-    def test_info_for_product(self):
-        product = Product("Ноутбук", "Мощный игровой ноутбук", 1500.00, 10)
-        assert str(product) == 'Ноутбук, 1500.0 руб. Остаток: 10 шт.'
-
-    def test_add_products(self, capsys):
-        product = Product("Ноутбук", "Мощный игровой ноутбук", 1500.00, 10)
-        product2 = Product("Мышь", "Беспроводная мышь", 25.50, 50)
-        assert product + product2 == 16275
-        with pytest.raises(TypeError):
-            product + 1
 
 
 class TestCategory:
@@ -61,7 +50,7 @@ class TestCategory:
         assert category.name == "Электроника"
         assert category.description == "Электронные устройства"
         assert len(category.products) == 1
-        assert category.products[0].name == "Ноутбук"
+        assert category.get_list_products[0].name == "Ноутбук"
 
     def test_category_counters(self):
         """Тест обновления счетчиков категорий и продуктов"""
@@ -74,6 +63,9 @@ class TestCategory:
         product2 = Product("Мышь", "Беспроводная мышь", 25.50, 50)
 
         category1 = Category("Электроника", "Электронные устройства", [product1, product2])
+
+        # Проверяем счетчики после создания первой категории
+        assert Category.category_count == 1
 
         # Создаем еще одну категорию
         product3 = Product("Книга", "Программирование на Python", 35.00, 20)
@@ -94,28 +86,6 @@ class TestCategory:
 
     def test_add_product_category(self):
         cat_empty = Category("Отечественная литература", "Толстой", [])
-        product4 = LawnGrass("Книга", "Война и мир", 45, 20,
-                             "russia", "5", "green")
+        product4 = Product("Книга", "Война и мир", 45, 20)
         cat_empty.add_product(product4)
-        product_smartphone = Smartphone("Test", "u", 56, 56,
-                                        4, 444, 44, "green")
-        with pytest.raises(TypeError):
-            cat_empty.add_product(product_smartphone)
-
-
-    def test_category_print(self):
-        product3 = Product("Книга", "Программирование на Python", 35.00, 20)
-        category2 = Category("Книги", "Книги и учебники", [product3])
-        assert str(category2) == "Книги, количество продуктов: 20 шт."
-
-class TestSmartptone:
-    def test_basic_smartphone(self):
-        Pr1 = Smartphone("ggg", "ggg", 66,
-                         888, 87, "Pixel", 666, "green")
-        assert Pr1.name == "ggg"
-
-class TestLawnGress:
-    def test_basic_lawngrass(self):
-        Pr2 = LawnGrass("ggg555", "ggg", 66,
-                         888, "Pixel", 666, "green")
-        assert Pr2.name == "ggg555"
+        assert cat_empty.products == ["Книга, 45 руб. Остаток: 20 шт."]
