@@ -97,8 +97,7 @@ class TestCategory:
         product4 = LawnGrass("Книга", "Война и мир", 45, 20,
                              "russia", "5", "green")
         cat_empty.add_product(product4)
-        product_smartphone = Smartphone("Test", "u", 56, 56,
-                                        4, 444, 44, "green")
+        product_smartphone = Category("Test", "u", [])
         with pytest.raises(TypeError):
             cat_empty.add_product(product_smartphone)
 
