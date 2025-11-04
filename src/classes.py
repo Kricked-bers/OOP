@@ -1,3 +1,6 @@
+from abc import ABC
+
+
 class Category:
     # Атрибуты класса
     category_count = 0
@@ -10,6 +13,7 @@ class Category:
         self.__products = products
 
     def add_product(self, new_product):
+        # Функция добавления продукта
         if issubclass(new_product.__class__, Product):
             return self.__products.append(new_product)
         else:
@@ -26,13 +30,34 @@ class Category:
         return self.__products
 
 
-class Product:
+class BaseProduct(ABC):
+    # Абстрактный класс родитель для класса Product
+    def __init__(self):
+        super().__init__()
+
+
+class MixinRepr:
+    # Класс Миксин для вывода информации о создаваемом классе
+    def __init__(self):
+        print(repr(self))
+        super().__init__()
+
+    def __repr__(self):
+        return (
+            f"{self.__class__.__name__}('{self.name}', '{self.description}', "
+            f"{self.price}, {self.quantity})"
+        )
+
+
+class Product(BaseProduct, MixinRepr):
+
     def __init__(self, name, description, price, quantity):
         # Атрибуты экземпляра
         self.name = name
         self.description = description
         self.__price = price
         self.quantity = quantity
+        super().__init__()
 
     @classmethod
     def new_product(cls, data):
@@ -59,16 +84,14 @@ class Product:
 
     def __add__(self, other):
         if type(self) is type(other):
-            return (self.quantity * self.__price
-                    + other.quantity * other.__price)
+            return self.quantity * self.__price + other.quantity * other.__price
         raise TypeError
 
 
 class Smartphone(Product):
 
     def __init__(
-            self, name, description, price, quantity,
-            efficiency, model, memory, color
+            self, name, description, price, quantity, efficiency, model, memory, color
     ):
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
@@ -79,8 +102,7 @@ class Smartphone(Product):
 
 class LawnGrass(Product):
     def __init__(
-            self, name, description, price, quantity,
-            country, germination_period, color
+            self, name, description, price, quantity, country, germination_period, color
     ):
         super().__init__(name, description, price, quantity)
         self.country = country
