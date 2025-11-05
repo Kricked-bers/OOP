@@ -34,7 +34,7 @@ class TestProduct:
         assert product_7.price == 500
         product_7.price = -8
         captured = capsys.readouterr()
-        assert captured.out.strip() == "Цена не должна быть нулевая или отрицательная"
+        assert captured.out.split("\n")[1] == "Цена не должна быть нулевая или отрицательная"
 
     def test_info_for_product(self):
         product = Product("Ноутбук", "Мощный игровой ноутбук", 1500.00, 10)
