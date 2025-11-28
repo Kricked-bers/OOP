@@ -29,10 +29,20 @@ class Category:
     def products(self):
         return self.__products
 
+    def middle_price(self):
+        try:
+            ave_prices = sum([i.price for i in self.__products]) / len(self.__products)
+            print(ave_prices)
+        except ZeroDivisionError:
+            return 0
+
 
 class BaseProduct(ABC):
     # Абстрактный класс родитель для класса Product
     def __init__(self):
+        if self.quantity == 0:
+            print("Товар с нулевым количеством не может быть добавлен")
+            raise ValueError
         super().__init__()
 
 
@@ -91,7 +101,7 @@ class Product(BaseProduct, MixinRepr):
 class Smartphone(Product):
 
     def __init__(
-            self, name, description, price, quantity, efficiency, model, memory, color
+        self, name, description, price, quantity, efficiency, model, memory, color
     ):
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
@@ -102,7 +112,7 @@ class Smartphone(Product):
 
 class LawnGrass(Product):
     def __init__(
-            self, name, description, price, quantity, country, germination_period, color
+        self, name, description, price, quantity, country, germination_period, color
     ):
         super().__init__(name, description, price, quantity)
         self.country = country

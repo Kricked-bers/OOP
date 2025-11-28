@@ -47,6 +47,11 @@ class TestProduct:
         with pytest.raises(TypeError):
             product + 1
 
+    def test_empty_quantity(self):
+        with pytest.raises(ValueError):
+            pr1 = Product("", "", 20, 0)
+
+
 
 class TestCategory:
     def test_category_creation(self):
@@ -107,6 +112,17 @@ class TestCategory:
         category2 = Category("Книги", "Книги и учебники", [product3])
         assert str(category2) == "Книги, количество продуктов: 20 шт."
 
+    def test_category_middle_prices(self, capsys):
+        pr1 = Product("ggg", "hhh", 5, 4)
+        pr2 = Product("gggj", "hhhj", 10, 4)
+        pr3 = Product("gggkk", "hhhkk", 15, 4)
+        cat1 = Category("ggfffddd", "gfdsff", (pr1, pr2, pr3))
+        cat1.middle_price()
+        captured = capsys.readouterr()
+        print(captured.out.split("\n")[3])
+        assert captured.out.split("\n")[3] == '10.0'
+        cat2 = Category("hhhh", "hhhhh", ())
+        assert cat2.middle_price() == 0
 class TestSmartptone:
     def test_basic_smartphone(self):
         Pr1 = Smartphone("ggg", "ggg", 66,
